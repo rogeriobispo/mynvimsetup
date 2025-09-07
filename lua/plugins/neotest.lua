@@ -1,9 +1,10 @@
 return {
   "nvim-neotest/neotest",
   dependencies = {
+    "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter",
     "antoinemadec/FixCursorHold.nvim",
+    "nvim-treesitter/nvim-treesitter",
     -- Adaptadores para Go, JS/TS (Jest) e Ruby
     "nvim-neotest/neotest-go",
     "nvim-neotest/neotest-jest",
@@ -22,9 +23,6 @@ return {
         require("neotest-jest")({
           jestCommand = "npm test --",
           env = { CI = true },
-          cwd = function(path)
-            return vim.fn.getcwd()
-          end,
         }),
         require("neotest-rspec")({
           rspec_cmd = function()
