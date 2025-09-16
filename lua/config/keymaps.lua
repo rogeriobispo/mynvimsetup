@@ -6,6 +6,7 @@ local map = vim.keymap.set
 local dap = require("dap")
 
 map("n", "<F5>", dap.continue, { desc = "Start/Continue Debugging" })
+map("n", "<F6>", dap.continue, { desc = "Resume Debugging" })
 map("n", "<F10>", dap.step_over, { desc = "Step Over" })
 map("n", "<F11>", dap.step_into, { desc = "Step Into" })
 map("n", "<F12>", dap.step_out, { desc = "Step Out" })
@@ -16,24 +17,61 @@ end, { desc = "Set Conditional Breakpoint" })
 -- keymaps for run tests
 local neotest = require("neotest")
 
+local neotest = require("neotest")
+
 vim.keymap.set("n", "<leader>tt", function()
   neotest.run.run()
 end, { desc = "Rodar teste atual" })
+
 vim.keymap.set("n", "<leader>td", function()
   neotest.run.run({ strategy = "dap" })
 end, { desc = "Rodar teste atual Debugging" })
+
 vim.keymap.set("n", "<leader>tf", function()
   neotest.run.run(vim.fn.expand("%"))
 end, { desc = "Rodar testes do arquivo" })
+
 vim.keymap.set("n", "<leader>ta", function()
   neotest.run.run(vim.loop.cwd())
 end, { desc = "Rodar todos os testes" })
+
 vim.keymap.set("n", "<leader>ts", function()
   neotest.summary.toggle()
 end, { desc = "Alternar sumário de testes" })
+
 vim.keymap.set("n", "<leader>to", function()
   neotest.output.open()
 end, { desc = "Abrir saída do teste" })
+
+vim.keymap.set("n", "<leader>tw", function()
+  neotest.watch.toggle()
+end, { desc = "Alternar watch nos testes" })
+local neotest = require("neotest")
+
+vim.keymap.set("n", "<leader>tt", function()
+  neotest.run.run()
+end, { desc = "Rodar teste atual" })
+
+vim.keymap.set("n", "<leader>td", function()
+  neotest.run.run({ strategy = "dap" })
+end, { desc = "Rodar teste atual Debugging" })
+
+vim.keymap.set("n", "<leader>tf", function()
+  neotest.run.run(vim.fn.expand("%"))
+end, { desc = "Rodar testes do arquivo" })
+
+vim.keymap.set("n", "<leader>ta", function()
+  neotest.run.run(vim.loop.cwd())
+end, { desc = "Rodar todos os testes" })
+
+vim.keymap.set("n", "<leader>ts", function()
+  neotest.summary.toggle()
+end, { desc = "Alternar sumário de testes" })
+
+vim.keymap.set("n", "<leader>to", function()
+  neotest.output.open()
+end, { desc = "Abrir saída do teste" })
+
 vim.keymap.set("n", "<leader>tw", function()
   neotest.watch.toggle()
 end, { desc = "Alternar watch nos testes" })
