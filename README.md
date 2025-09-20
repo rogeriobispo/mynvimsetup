@@ -68,3 +68,12 @@
 - **GNOME**: `gpaste`
 - **KDE**: já possui clipboard integrado
 - **Usuários de `rofi` ou `dmenu`**: `greenclip`, `clipmenu`
+
+### Debug with Microsft vscode-js-debug
+
+mkdir -p ~/.local/share/nvim/dap_adapters
+cd ~/.local/share/nvim/dap_adapters
+git clone <https://github.com/microsoft/vscode-js-debug.git>
+cd vscode-js-debug
+npm install
+npm run build

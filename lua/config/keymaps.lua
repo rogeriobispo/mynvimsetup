@@ -3,20 +3,23 @@
 -- Add any additional keymaps here
 --  key maps for Debugging
 local map = vim.keymap.set
-local dap = require("dap")
 
+-- keymaps for dap
+local dap = require("dap")
 map("n", "<F5>", dap.continue, { desc = "Start/Continue Debugging" })
-map("n", "<F6>", dap.continue, { desc = "Resume Debugging" })
+map("n", "<F6>", function()
+  dap.terminate()
+  pcall(require("dapui").close)
+end, { desc = "Stop Debugging" })
 map("n", "<F10>", dap.step_over, { desc = "Step Over" })
 map("n", "<F11>", dap.step_into, { desc = "Step Into" })
 map("n", "<F12>", dap.step_out, { desc = "Step Out" })
 map("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
 map("n", "<Leader>dB", function()
   dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end, { desc = "Set Conditional Breakpoint" })
--- keymaps for run tests
-local neotest = require("neotest")
+end, { desc = "Conditional Breakpoint" })
 
+-- keymaps for run tests
 local neotest = require("neotest")
 
 vim.keymap.set("n", "<leader>tt", function()

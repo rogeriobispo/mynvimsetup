@@ -1,43 +1,63 @@
 return {
-  "mfussenegger/nvim-dap",
-  dependencies = {
-    {
-      "jbyuki/one-small-step-for-vimkind",
-      -- stylua: ignore
-      config = function()
-        local dap = require("dap")
-        dap.adapters.nlua = function(callback, conf)
-          local adapter = {
-            type = "server",
-            host = conf.host or "127.0.0.1",
-            port = conf.port or 8086,
-          }
-          if conf.start_neovim then
-            local dap_run = dap.run
-            dap.run = function(c)
-              adapter.port = c.port
-              adapter.host = c.host
-            end
-            require("osv").run_this()
-            dap.run = dap_run
-          end
-          callback(adapter)
-        end
-        dap.configurations.lua = {
-          {
-            type = "nlua",
-            request = "attach",
-            name = "Run this file",
-            start_neovim = {},
-          },
-          {
-            type = "nlua",
-            request = "attach",
-            name = "Attach to running Neovim instance (port = 8086)",
-            port = 8086,
-          },
-        }
-      end,
+  -- nvim-dap principal
+  {
+    "mfussenegger/nvim-dap",
+    lazy = true,
+    dependencies = {
+      "rcarriga/nvim-dap-ui", -- UI bonita
+      "theHamsta/nvim-dap-virtual-text", -- variáveis inline
     },
+    config = function()
+      local dap = require("dap").set_log_level("DEBUG")
+      local dapui = require("dapui")
+
+      -- Configura dap-ui
+      dapui.setup()
+      require("nvim-dap-virtual-text").setup()
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      -- Adapter js-debug (Microsoft)
+      dap.adapters.node = {
+        type = "executable",
+        command = "node",
+        args = {
+          os.getenv("HOME") .. "/.local/share/nvim/dap_adapters/vscode-js-debug/out/src/dapDebugServer.js",
+          "--server",
+          "127.0.0.1:4711",
+        },
+      }
+
+      -- Configuração de Node.js
+      dap.configurations.javascript = {
+        {
+          name = "Launch Current File",
+          type = "node",
+          request = "launch",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          console = "integratedTerminal",
+        },
+        {
+          name = "Attach to Process",
+          type = "node",
+          request = "attach",
+          port = 9229,
+          restart = true,
+          sourceMaps = true,
+          protocol = "inspector",
+          cwd = vim.fn.getcwd(),
+        },
+      }
+    end,
   },
 }
