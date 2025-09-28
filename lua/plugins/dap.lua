@@ -8,7 +8,7 @@ return {
       "theHamsta/nvim-dap-virtual-text", -- variáveis inline
     },
     config = function()
-      local dap = require("dap").set_log_level("DEBUG")
+      local dap = require("dap")
       local dapui = require("dapui")
 
       -- Configura dap-ui
@@ -58,6 +58,15 @@ return {
           cwd = vim.fn.getcwd(),
         },
       }
+
+      -- Adapter Ruby rdgb
+      dap.adapters.ruby = function(callback, config)
+        callback({
+          type = "server",
+          host = "127.0.0.1",
+          port = config.port,
+        })
+      end
     end,
   },
 }

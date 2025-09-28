@@ -77,3 +77,11 @@ git clone <https://github.com/microsoft/vscode-js-debug.git>
 cd vscode-js-debug
 npm install
 npm run build
+
+### for ruby debug install
+
+bundle add debug
+
+### rum server this way
+
+bundle exec rdbg -n --open --port 38698 -- bin/rails server
